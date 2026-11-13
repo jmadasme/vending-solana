@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+*.keypair.json
+wallet.json
+*.key
+id.json
+.DS_Store
+*.log
+PLAN.md
+AUDIT_REPORT.md
+NOTAS_RETOMAR.md
+DESIGN.md
+.lgd-nfy0
+config.devnet.yaml.bak

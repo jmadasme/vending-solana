@@ -1,0 +1,41 @@
+name: Solicitud de acceso
+description: Pedir acceso a una versión privada de Vending Solana.
+title: "[Acceso] vending-solana"
+labels: ["solicitud-acceso"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Este formulario pide acceso a una versión privada de **Vending Solana**.
+        La primera versión (`vending-solana`) es pública y gratuita.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Versión solicitada
+      options:
+        - "vending-solana-backup"
+        - "vending-solana-unoq"
+        - "vending-solana-v2"
+    validations:
+      required: true
+  - type: input
+    id: uso
+    attributes:
+      label: Tipo de uso
+      description: Personal, educativo, comercial, interno, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto
+      description: Contame qué querés construir, para qué y por qué necesitás esta versión.
+    validations:
+      required: true
+  - type: checkboxes
+    id: condiciones
+    attributes:
+      label: Condiciones
+      options:
+        - label: Entiendo que esta versión es privada, que no se redistribuye y que el acceso se otorga por autorización escrita.
+          required: true
