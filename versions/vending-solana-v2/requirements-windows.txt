@@ -1,0 +1,17 @@
+# requirements-windows.txt — Dependencias para Windows 10/11.
+# Igual que requirements.txt pero SIN gpiozero/lgpio: en Windows no hay GPIO;
+# dispenser.py entra en modo stub automáticamente al no poder importar gpiozero.
+fastapi>=0.110
+uvicorn[standard]>=0.29
+jinja2>=3.1
+solders>=0.21
+# El namespace `spl` se distribuye dentro de solana>=0.40.
+solana>=0.40
+qrcode>=7.4
+pillow>=10.0
+pydantic>=2.0
+base58>=2.1
+python-dotenv>=1.0
+httpx>=0.27
+websockets>=10.4
+PyYAML>=6.0

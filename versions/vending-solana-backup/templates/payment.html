@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pago · {{ order.product_name }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="container narrow">
+    <header class="header">
+      <h1 class="brand">🥤 Vending Coca-Cola</h1>
+    </header>
+    <h1 class="product-name">{{ order.product_name }}</h1>
+    <p class="price">{{ "%.2f"|format(order.price_usdc) }} USDC</p>
+
+    <div class="qr-wrap">
+      <img class="qr" src="/order/{{ order.order_id }}/qr" alt="QR Solana Pay">
+    </div>
+
+    <p class="status" id="status" data-order-id="{{ order.order_id }}">
+      Esperando pago… ({{ timeout_s }} s)
+    </p>
+
+    <p style="margin-top: 18px;">
+      <button class="btn btn-danger" id="btn-cancel">Cancelar orden</button>
+    </p>
+
+    <a class="btn-ghost" href="/">Volver al catálogo</a>
+
+    <footer class="footer">
+      Vending Coca-Cola · Pago instantáneo con USDC sobre Solana <span class="dot">●</span> Solana Pay
+    </footer>
+  </main>
+
+  <script>
+    const orderId = document.querySelector('#status').dataset.orderId;
+    const statusEl = document.querySelector('#status');
+    const cancelBtn = document.querySelector('#btn-cancel');
+    let done = false;
+
+    cancelBtn.addEventListener('click', async () => {
+      cancelBtn.disabled = true;
+      cancelBtn.textContent = 'Cancelando…';
+      try {
+        const r = await fetch(`/order/${orderId}/cancel`, {method: 'POST'});
+        if (!r.ok) {
+          const e = await r.json().catch(() => ({}));
+          alert('No se pudo cancelar: ' + (e.detail || 'error'));
+          cancelBtn.disabled = false;
+          cancelBtn.textContent = 'Cancelar orden';
+          return;
+        }
+        done = true;
+        window.location.href = `/order/${orderId}/cancelled`;
+      } catch (e) {
+        alert('Error de red: ' + e.message);
+        cancelBtn.disabled = false;
+        cancelBtn.textContent = 'Cancelar orden';
+      }
+    });
+
+    async function poll() {
+      if (done) return;
+      try {
+        const r = await fetch(`/order/${orderId}`);
+        const s = await r.json();
+        if (s.status === 'pagada' || s.status === 'dispensada') {
+          done = true;
+          window.location.href = `/order/${orderId}/confirmed`;
+        } else if (s.status === 'expirada') {
+          done = true;
+          window.location.href = `/order/${orderId}/expired`;
+        } else if (s.status === 'cancelada') {
+          done = true;
+          window.location.href = `/order/${orderId}/cancelled`;
+        } else {
+          statusEl.textContent = `Esperando pago… (${s.remaining_s ?? ''} s)`;
+        }
+      } catch (e) { /* reintentar */ }
+    }
+    setInterval(poll, 1500);
+    poll();
+  </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+# config.yaml — Configuración de la máquina expendedora cripto (vending-solana)
+# Los valores aquí definidos pueden sobrescribirse con variables de entorno
+# (ver .env.example). Preferencia: env > config.yaml > defaults.
+
+network: devnet
+
+# RPC público de devnet (sin Helius). El respaldo puede ser el mismo endpoint
+# o un proveedor público alternativo.
+rpc_http: "https://api.devnet.solana.com"
+rpc_ws: "wss://api.devnet.solana.com"
+rpc_http_backup: "https://api.devnet.solana.com"
+
+# USDC devnet de Circle faucet (6 decimales). Para pruebas autónomas se puede
+# sobrescribir con USDC_MINT apuntando a un token SPL propio (scripts/devnet_e2e_test.py).
+usdc_mint: "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+usdc_decimals: 6
+
+# Wallet del comercio (keypair nuevo; NUNCA en git).
+wallet_path: "wallet.json"
+
+# Timeouts / duración
+order_timeout_seconds: 300
+dispense_pulse_seconds: 2.5
+poll_interval_ms: 1500
+
+# Pines GPIO (BCM). Pi 5 usa libgpiod (/dev/gpiochip4) -> gpiozero backend lgpio.
+dispense_pin: 17
+led_ready_pin: 27
+led_paid_pin: 22
+led_error_pin: 23
+
+# Modo de prueba del dispensador: si "auto", usa GPIO real cuando esté
+# disponible; si "stub", nunca toca GPIO (host de desarrollo).
+dispenser_mode: auto

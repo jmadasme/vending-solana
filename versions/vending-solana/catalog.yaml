@@ -1,0 +1,11 @@
+# catalog.yaml — Catálogo de productos de la máquina expendedora.
+# Precio en unidades base (6 decimales): 1.00 USDC = 1_000_000.
+
+products:
+  - sku: coca-cola
+    name: "Coca-Cola (lata 330 ml)"
+    price_usdc: 1.00
+    price_base: 1000000
+    pulse_seconds: 2.5
+    dispense_pin: 17
+    image: "coca-cola.png"
