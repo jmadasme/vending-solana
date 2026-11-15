@@ -2,7 +2,7 @@
 
 ![Estado](https://img.shields.io/badge/estado-preservado-2A9D8F?style=flat-square)
 ![Versiones](https://img.shields.io/badge/versiones-4-457B9D?style=flat-square)
-![Sección](https://img.shields.io/badge/sección-iot-5B7C99?style=flat-square)
+![Sección](https://img.shields.io/badge/sección-arduino%20unoq-5B7C99?style=flat-square)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-06141b?style=flat-square)
 
 > Máquina expendedora que cobra en USDC sobre Solana y acciona relés desde una Arduino UNO Q.
@@ -11,8 +11,6 @@ Este repositorio reúne **4 versiones** de Vending Solana en `versions/`.
 Cada carpeta conserva el contenido original de su etapa, sin `.git`, dependencias
 instaladas ni binarios pesados. La documentación de operación y de código está en
 [`docs/`](docs/), y el sitio del proyecto en [`docs/index.html`](docs/index.html).
-
-> **Nota de preservación:** se removieron credenciales, claves o tokens detectados en 23 archivo(s) de esta familia. Los ejemplos y plantillas seguras se conservan.
 
 ## Índice de versiones
 
@@ -38,6 +36,42 @@ cp .env.example .env
 
 Las wallets y claves privadas fueron removidas. La versión unoq apunta a mainnet-beta: probá primero con montos mínimos.
 
+<!-- ficha -->
+## Ficha de evaluación
+
+**Madurez global: 3.7/5**
+
+| Criterio | Nota | Evidencia |
+|---|---:|---|
+| Madurez | 3/5 | Pagos reales en mainnet y servicios systemd, pero sin suite automatizada, con órdenes en memoria y un solo motor. |
+| Reproducibilidad | 2/5 | Exige wallet, RPC, relé y MCU; la unidad probada perdió el WiFi y el E2E en devnet no se ejecutó. |
+| Documentación | 5/5 | README extenso, datasheet, guía de desarrollador y referencias; límites y advertencias por escrito. |
+| Honestidad de límites | 5/5 | Declara órdenes en memoria, ausencia de tests, WiFi en RMA y reembolsos manuales. |
+| Valor demostrativo | 5/5 | Único caso del catálogo con pagos reales en mainnet y verificación on-chain, con latencias medidas. |
+| Facilidad de despliegue | 2/5 | Despliegue por ADB, sketch del MCU, systemd y configuración de wallet; no hay instalación de un paso. |
+
+Máquina expendedora con pagos reales verificados en mainnet y documentación ejemplar, limitada por la falta de pruebas automatizadas, órdenes en memoria y un solo motor. Sirve como referencia de integración, no como producto sin auditoría.
+
+## Lo que no funcionó
+
+### vending-solana — Phantom mostraba montos absurdos
+
+El QR incluía el monto en unidades base y algunas versiones de Phantom mostraban cifras desproporcionadas, como 1.000.000 o 150.000 en lugar de 1,50. Se optó por emitir el QR sin amount ni metadatos, mostrar el total en pantalla y validar con tolerancia de ±0,01 USDC. El cliente digita el monto y existe el estado monto_incorrecto.
+
+### vending-solana-v2 — Ocho bebidas, un solo motor
+
+Limitación heredada: la v2 maneja ocho bebidas, pero todas comparten un solo relé y un pulso secuencial de 2,5 s por unidad. No hay control de stock, así que la máquina no sabe si queda bebida. La versión UNO Q conserva ese esquema en D7 y tampoco distingue qué producto se dispensó.
+
+### vending-solana-unoq — libgpiod no movía los pines del header
+
+Al portar el control a la UNO Q, libgpiod sobre gpiochip1 y gpiochip2 no movía los pines del header: son pinctrl del MPU para LEDs y botones, no el conector. Se descartaron sysfs, bit-bang y abrir /dev/ttyHS1, ocupado por arduino-router. La solución fue el sketch unoq_gpio_control y su monitor TCP en 127.0.0.1:7500.
+
+### vending-solana-unoq — solana-py 0.41 rompió el monitor
+
+solana-py 0.41 eliminó solana.rpc.websocket_api.connect y el monitor de pagos no arrancaba. Se reemplazó por detección de capacidad: si existe SolanaWsClient se usa account_subscribe y, si no, una rama compatible con la API anterior. También se corrigieron las cuentas de transacciones v0 con lookup tables y el rechazo de transacciones con meta.err.
+
+<!-- /ficha -->
+
 ## Documentación
 
 - [`docs/datasheet.md`](docs/datasheet.md) — instalación, operación y límites.
@@ -45,9 +79,9 @@ Las wallets y claves privadas fueron removidas. La versión unoq apunta a mainne
 - [`docs/REFERENCES.md`](docs/REFERENCES.md) — estándares, librerías y fuentes.
 - [`docs/index.html`](docs/index.html) — página del proyecto (GitHub Pages).
 
-## Alcance y honestidad
+## El proyecto en detalle
 
-## 🥤 Vending Solana USDC — Arduino UNO Q
+### 🥤 Vending Solana USDC — Arduino UNO Q
 
 [![Python](https://img.shields.io/badge/Python-3.13.5-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.159-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)

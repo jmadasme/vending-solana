@@ -156,6 +156,39 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
 .rich .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
 .rich .card-grid .card{margin:0}
 
+
+.rich h3{margin:26px 0 8px}
+.rich p{margin:0 0 14px;color:var(--muted);line-height:1.7}
+.fail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:6px}
+.fail{background:rgba(11,34,43,.55);border:1px solid var(--line);border-radius:14px;padding:18px}
+.fail .v{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm,#D6A86A)}
+.fail h3{font-size:16px;margin:8px 0 6px}
+.fail p{font-size:14px;margin:0;color:var(--muted)}
+.rating-head{display:flex;align-items:center;gap:20px;margin:6px 0 18px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:rgba(11,34,43,.55)}
+.rating-avg{font-family:var(--mono);font-size:40px;line-height:1;color:var(--accent)}
+.rating-avg small{font-size:14px;color:var(--muted)}
+.rating-head p{margin:4px 0 0;font-size:14px;color:var(--muted);max-width:70ch}
+.rating{display:grid;gap:2px}
+.rating-row{display:grid;grid-template-columns:165px minmax(90px,1fr) 48px;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.rating-row:last-child{border-bottom:0}
+.rating-name{font-size:13.5px;font-weight:600}
+.rating-bar{height:6px;border-radius:99px;background:rgba(148,190,200,.14);overflow:hidden}
+.rating-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.rating-score{font-family:var(--mono);font-size:12.5px;color:var(--accent);text-align:right}
+.rating-note{grid-column:2/-1;font-size:12.5px;color:var(--muted);margin-top:-4px}
+.faq{display:grid;gap:0;margin-top:4px}
+.faq details{border-bottom:1px solid var(--line);padding:14px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"+";display:inline-block;width:18px;color:var(--accent);font-family:var(--mono)}
+.faq details[open] summary::before{content:"–"}
+.faq p{margin:10px 0 0 18px;font-size:14px;color:var(--muted)}
+@media(max-width:720px){
+  .fail-grid{grid-template-columns:1fr}
+  .rating-head{flex-direction:column;align-items:flex-start}
+  .rating-row{grid-template-columns:120px 1fr 44px}
+}
+
 </style>
 <link rel="stylesheet" href="assets/community.css?v=1">
 </head>
@@ -188,15 +221,7 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
 
 <section class="stats"><div class="wrap stats-grid"><div class="stat"><div class="stat-num">4</div><div class="stat-label">versiones</div></div><div class="stat"><div class="stat-num">8</div><div class="stat-label">bebidas v2</div></div><div class="stat"><div class="stat-num">1</div><div class="stat-label">red Solana</div></div><div class="stat"><div class="stat-num">0</div><div class="stat-label">custodia</div></div></div></section>
 
-<section class="section" id="proyecto"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">01 — El proyecto</div><h2>Qué resuelve</h2><p class="section-sub">Cuatro versiones de una máquina expendedora con pago cripto: prototipo en Raspberry Pi, copia de resguardo, implementación sobre UNO Q con FastAPI y kiosco, y una versión de ocho bebidas con catálogo YAML y reembolsos.</p></div>
-  <div class="two">
-    <div class="card reveal"><span class="tag">Problema</span><h3>El punto de partida</h3><p>Una máquina expendedora tradicional no puede verificar un pago digital y accionar el relé correcto sin un intermediario que cobre comisiones.</p></div>
-    <div class="card reveal"><span class="tag">Solución</span><h3>La propuesta</h3><p>Verificar la transacción en Solana, mapear el pago a una bebida y accionar el GPIO correspondiente desde la UNO Q, con un kiosco como interfaz.</p></div>
-  </div>
-</div></section>
-
-<section class="section" id="versiones"><div class="wrap">
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">El concepto</div><h2>Qué es y por qué existe</h2></div><div class="rich reveal"><p>Vending Solana es una máquina expendedora que cobra USDC en Solana y dispensa bebidas accionando un relé. El cliente escanea un QR de Solana Pay, el backend verifica la transacción contra la red y solo entonces envía la orden al MCU. La versión integrada corre en una UNO Q con FastAPI, monitor WebSocket de la cuenta asociada, kiosco web y servicios systemd; el firmware del STM32U585 gobierna el GPIO.</p><p>El recorrido empieza en una Raspberry Pi 5 y llega a la UNO Q tras cuatro carpetas de versión. Su valor está en el ciclo completo: tres pagos reales en mainnet-beta verificados, validación de destino, monto y referencia, y pulso de dispensado de 2,5 s. No es un producto terminado: no tiene suite automatizada, las órdenes viven en memoria y la unidad probada perdió el WiFi.</p></div></div></section><section class="section" id="versiones"><div class="wrap">
   <div class="section-head reveal"><div class="kicker">02 — Versiones</div><h2>La historia, completa.</h2><p class="section-sub">Cada carpeta conserva una etapa del proyecto. No se borraron las anteriores: se pusieron en contexto.</p></div>
   <div class="versions"><article class="version reveal">
   <div class="version-top"><h3>vending-solana</h3><span class="count">29 archivos</span></div>
@@ -216,11 +241,11 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
   <a href="https://github.com/jmadasme/vending-solana/tree/main/versions/vending-solana-v2" target="_blank" rel="noopener">Ver carpeta <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 </article></div>
 </div></section>
-<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">01 — La idea</div><h2>Cobrar sin datáfono, sin intermediarios</h2><p class="section-sub">Una tienda de autoatención completa dentro de una placa: el cliente escanea un QR de Solana Pay, paga USDC desde su wallet y la máquina dispensa. El comercio recibe directo en su cuenta; la placa solo verifica.</p></div><div class="rich reveal"><div class="card-grid">
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">03 — La idea</div><h2>Cobrar sin datáfono, sin intermediarios</h2><p class="section-sub">Una tienda de autoatención completa dentro de una placa: el cliente escanea un QR de Solana Pay, paga USDC desde su wallet y la máquina dispensa. El comercio recibe directo en su cuenta; la placa solo verifica.</p></div><div class="rich reveal"><div class="card-grid">
 <div class="card"><h3>Los pagos tienen dueño</h3><div><div></div><p>Los datáfonos imponen comisiones, contratos y hardware cerrado. Integrar un pago propio suele significar una pasarela que retiene el dinero, añade latencia y decide cuándo te paga.</p></div></div>
 <div class="card"><h3>Un QR, liquidación directa</h3><div><div></div><p>Solana Pay convierte cualquier pantalla en un punto de cobro. El cliente paga USDC a la wallet del comercio y la placa confirma la transferencia contra un reference único. Sin custodia, sin clave privada que robar.</p></div></div>
 </div></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">02 — El recorrido</div><h2>Cómo funciona, paso a paso</h2><p class="section-sub">Del carrito al relé: seis pasos, cada uno con su validación y su estado visible.</p></div><div class="rich reveal"><div class="timeline">
+<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">04 — El recorrido</div><h2>Cómo funciona, paso a paso</h2><p class="section-sub">Del carrito al relé: seis pasos, cada uno con su validación y su estado visible.</p></div><div class="rich reveal"><div class="timeline">
 <div class="step"><div class="step-n">01</div><h4>El cliente arma el carrito</h4><div><p>Hasta ocho SKUs distintos, una unidad por producto, con el total siempre visible en la pantalla.</p></div></div>
 <div class="step"><div class="step-n">02</div><h4>El backend crea la orden</h4><div><p>Valida los SKU y recalcula el total desde catalog.yaml. El navegador nunca decide el monto.</p></div></div>
 <div class="step"><div class="step-n">03</div><h4>Aparece el QR de Solana Pay</h4><div><p>El QR lleva wallet, mint de USDC y un reference único, pero no el monto: el cliente digita el total exacto.</p></div></div>
@@ -228,13 +253,13 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
 <div class="step"><div class="step-n">05</div><h4>El MCU dispensa</h4><div><p>Un pulso de 2,5 s en D7 a través de arduino-router. Cada bebida se despacha en orden, con LEDs de estado.</p></div></div>
 <div class="step"><div class="step-n">06</div><h4>La orden se cierra</h4><div><p>Estado dispensada, carrito limpio y feedback en pantalla. La venta queda registrada para auditoría.</p></div></div>
 </div></div></div></section>
-<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">03 — Bajo el capó</div><h2>Una placa, dos cerebros y la cadena</h2><p class="section-sub">El Linux embebido corre la web y el monitor de pagos; el STM32U585 es el único que toca el relé. La separación es deliberada: el dinero vive en la nube, la acción física en el MCU.</p></div><div class="rich reveal"><figure><img src="assets/rich/architecture.svg" alt="Arquitectura del vending: navegador, FastAPI, Solana RPC, monitor y MCU" loading="lazy"><figcaption>docs/assets/architecture.svg · componentes y protocolos</figcaption></figure>
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">05 — Bajo el capó</div><h2>Una placa, dos cerebros y la cadena</h2><p class="section-sub">El Linux embebido corre la web y el monitor de pagos; el STM32U585 es el único que toca el relé. La separación es deliberada: el dinero vive en la nube, la acción física en el MCU.</p></div><div class="rich reveal"><figure><img src="assets/rich/architecture.svg" alt="Arquitectura del vending: navegador, FastAPI, Solana RPC, monitor y MCU" loading="lazy"><figcaption>docs/assets/architecture.svg · componentes y protocolos</figcaption></figure>
 <div class="card-grid">
 <div class="card"><h3>Backend sin estado crítico</h3><div><p>Las órdenes se persisten y el reference hace de idempotency key.</p></div></div>
 <div class="card"><h3>El MCU no negocia</h3><div><p>El Linux le envía un comando de pulso; el sketch jamás manipula pagos.</p></div></div>
 <div class="card"><h3>Todo por USB y systemd</h3><div><p>Despliegue con tar sobre ADB, servicio con límite de 700 MB.</p></div></div>
 </div></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">04 — Lo que lo hace distinto</div><h2>Decisiones de ingeniería</h2><p class="section-sub">Las decisiones que separan una demo bonita de una máquina que puede operar con dinero real.</p></div><div class="rich reveal"><div class="features">
+<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">06 — Lo que lo hace distinto</div><h2>Decisiones de ingeniería</h2><p class="section-sub">Las decisiones que separan una demo bonita de una máquina que puede operar con dinero real.</p></div><div class="rich reveal"><div class="features">
 <div class="feature"><h3>Total calculado en el servidor</h3><div><p>El precio sale siempre de catalog.yaml. El navegador no puede alterar el monto ni inyectar SKUs.</p></div></div>
 <div class="feature"><h3>QR sin amount</h3><div><p>El cliente digita el total exacto. El backend valida la transferencia contra el reference, no contra un número confiado.</p></div></div>
 <div class="feature"><h3>Modelo pubkey-only</h3><div><p>La placa guarda solo la clave pública del comercio. No hay clave privada que extraer de la máquina.</p></div></div>
@@ -242,7 +267,7 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
 <div class="feature"><h3>MCU real, no GPIO emulado</h3><div><p>El pulso del relé lo genera el STM32U585 y lo expone arduino-router en 127.0.0.1:7500.</p></div></div>
 <div class="feature"><h3>Despliegue reproducible</h3><div><p>Tar por ADB, venv sin pip, wheels predescargadas y unidad systemd con memoria acotada.</p></div></div>
 </div></div></div></section>
-<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">05 — Stack y arranque</div><h2>Con qué está construido</h2><p class="section-sub">Python en el MPU, firmware en el MCU y la cadena de Solana como fuente de verdad del pago.</p></div><div class="rich reveal"><p><p>El negocio está en Python; la acción física, en el MCU. La cadena se consulta por WebSocket y se reconcilia por HTTP para no depender de un solo camino.</p></p>
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">07 — Stack y arranque</div><h2>Con qué está construido</h2><p class="section-sub">Python en el MPU, firmware en el MCU y la cadena de Solana como fuente de verdad del pago.</p></div><div class="rich reveal"><p><p>El negocio está en Python; la acción física, en el MCU. La cadena se consulta por WebSocket y se reconcilia por HTTP para no depender de un solo camino.</p></p>
 <p>Python 3.13.5 FastAPI Uvicorn Jinja2 solana-py solders WebSocket PyYAML Debian 13.2 systemd ADB STM32U585 Zephyr Solana mainnet-beta USDC SPL</p>
 <div class="note"><div><span>Probá primero en devnet. La configuración de producción usa mainnet-beta y USDC real: un error de monto o de red se paga con dinero.</span></div></div>
 <p>despliegue en la UNO Q</p>
@@ -252,12 +277,11 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
 <span>$</span> bash scripts/setup_unoq.sh    # prepara el entorno en la placa
 <span>$</span> bash scripts/deploy_unoq.sh --wheels
 <span>$</span> adb shell sudo systemctl start vending-unoq</pre></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">06 — Documentación</div><h2>Todo está escrito</h2><p class="section-sub">Cada decisión, cada límite y cada comando están documentados en el repositorio. Sin folletos: lo que funciona se muestra, lo que no, también.</p></div><div class="rich reveal"><div class="card-grid">
+<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">08 — Documentación</div><h2>Todo está escrito</h2><p class="section-sub">Cada decisión, cada límite y cada comando están documentados en el repositorio. Sin folletos: lo que funciona se muestra, lo que no, también.</p></div><div class="rich reveal"><div class="card-grid">
 <a class="card" href=""><h3>Datasheet</h3><p>Instalación, operación, catálogo, configuración y mantenimiento, con los códigos de error y el modelo de seguridad.</p></a>
 <a class="card" href=""><h3>Guía de desarrollador</h3><p>Arquitectura módulo por módulo: app.py, payments.py, dispenser.py, mcu.py, wallet.py y los scripts.</p></a>
 <a class="card" href=""><h3>Referencias</h3><p>Solana Pay, SPL Token, solana-py, FastAPI, Arduino UNO Q y arduino-router, con el porqué de cada enlace.</p></a>
-</div></div></div></section>
-<section class="cta"><div class="wrap"><div class="cta-box reveal">
+</div></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">Lo que no funcionó</div><h2>Los tropiezos, documentados</h2><p class="section-sub">Las primeras versiones existen para que estos errores no se repitan: cada una dejó una decisión de diseño verificable.</p></div><div class="fail-grid reveal"><div class="fail"><div class="v">vending-solana</div><h3>Phantom mostraba montos absurdos</h3><p>El QR incluía el monto en unidades base y algunas versiones de Phantom mostraban cifras desproporcionadas, como 1.000.000 o 150.000 en lugar de 1,50. Se optó por emitir el QR sin amount ni metadatos, mostrar el total en pantalla y validar con tolerancia de ±0,01 USDC. El cliente digita el monto y existe el estado monto_incorrecto.</p></div><div class="fail"><div class="v">vending-solana-v2</div><h3>Ocho bebidas, un solo motor</h3><p>Limitación heredada: la v2 maneja ocho bebidas, pero todas comparten un solo relé y un pulso secuencial de 2,5 s por unidad. No hay control de stock, así que la máquina no sabe si queda bebida. La versión UNO Q conserva ese esquema en D7 y tampoco distingue qué producto se dispensó.</p></div><div class="fail"><div class="v">vending-solana-unoq</div><h3>libgpiod no movía los pines del header</h3><p>Al portar el control a la UNO Q, libgpiod sobre gpiochip1 y gpiochip2 no movía los pines del header: son pinctrl del MPU para LEDs y botones, no el conector. Se descartaron sysfs, bit-bang y abrir /dev/ttyHS1, ocupado por arduino-router. La solución fue el sketch unoq_gpio_control y su monitor TCP en 127.0.0.1:7500.</p></div><div class="fail"><div class="v">vending-solana-unoq</div><h3>solana-py 0.41 rompió el monitor</h3><p>solana-py 0.41 eliminó solana.rpc.websocket_api.connect y el monitor de pagos no arrancaba. Se reemplazó por detección de capacidad: si existe SolanaWsClient se usa account_subscribe y, si no, una rama compatible con la API anterior. También se corrigieron las cuentas de transacciones v0 con lookup tables y el rechazo de transacciones con meta.err.</p></div></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">Ficha de evaluación</div><h2>Cómo se mide este proyecto</h2><p class="section-sub">Seis criterios con la misma escala en todo el catálogo, para comparar sin marketing.</p></div><div class="rating-head reveal"><div class="rating-avg">3.7<small>/5</small></div><div><strong>Madurez global</strong><p>Máquina expendedora con pagos reales verificados en mainnet y documentación ejemplar, limitada por la falta de pruebas automatizadas, órdenes en memoria y un solo motor. Sirve como referencia de integración, no como producto sin auditoría.</p></div></div><div class="rating reveal"><div class="rating-row"><div class="rating-name">Madurez</div><div class="rating-bar"><i style="width:60%"></i></div><div class="rating-score">3/5</div><div class="rating-note">Pagos reales en mainnet y servicios systemd, pero sin suite automatizada, con órdenes en memoria y un solo motor.</div></div><div class="rating-row"><div class="rating-name">Reproducibilidad</div><div class="rating-bar"><i style="width:40%"></i></div><div class="rating-score">2/5</div><div class="rating-note">Exige wallet, RPC, relé y MCU; la unidad probada perdió el WiFi y el E2E en devnet no se ejecutó.</div></div><div class="rating-row"><div class="rating-name">Documentación</div><div class="rating-bar"><i style="width:100%"></i></div><div class="rating-score">5/5</div><div class="rating-note">README extenso, datasheet, guía de desarrollador y referencias; límites y advertencias por escrito.</div></div><div class="rating-row"><div class="rating-name">Honestidad de límites</div><div class="rating-bar"><i style="width:100%"></i></div><div class="rating-score">5/5</div><div class="rating-note">Declara órdenes en memoria, ausencia de tests, WiFi en RMA y reembolsos manuales.</div></div><div class="rating-row"><div class="rating-name">Valor demostrativo</div><div class="rating-bar"><i style="width:100%"></i></div><div class="rating-score">5/5</div><div class="rating-note">Único caso del catálogo con pagos reales en mainnet y verificación on-chain, con latencias medidas.</div></div><div class="rating-row"><div class="rating-name">Facilidad de despliegue</div><div class="rating-bar"><i style="width:40%"></i></div><div class="rating-score">2/5</div><div class="rating-note">Despliegue por ADB, sketch del MCU, systemd y configuración de wallet; no hay instalación de un paso.</div></div></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">Preguntas típicas</div><h2>Lo que suelen preguntar</h2></div><div class="faq reveal"><details><summary>¿Cobra de verdad?</summary><p>La versión unoq fue probada con pagos reales en mainnet-beta. Eso no la hace apta para producción sin auditoría.</p></details><details><summary>¿Dónde está la clave privada?</summary><p>No se publica. Se removió junto con los archivos de billeteras.</p></details><details><summary>¿Qué placa usa?</summary><p>Arduino UNO Q con MCU STM32U585 para los relés y Linux para el servicio.</p></details><details><summary>¿Puedo usar otra red?</summary><p>Sí, cambiando el RPC y el programa de pago; el código está acoplado a Solana.</p></details><details><summary>¿La v2 es más completa?</summary><p>Tiene catálogo y reembolsos, pero la referencia documental es la versión unoq.</p></details></div></div></section><section class="cta"><div class="wrap"><div class="cta-box reveal">
   <div class="kicker">Siguiente paso</div><h2>¿Te animás?</h2>
   <p>Usá esta familia como base para vending solana. Está documentada para que puedas entenderla, ejecutarla y continuarla sin adivinar.</p>
   <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="https://github.com/jmadasme/vending-solana" target="_blank" rel="noopener">Abrir el repositorio <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-ghost" href="/arduino-unoq/">Ver más de Arduino</a></div>
